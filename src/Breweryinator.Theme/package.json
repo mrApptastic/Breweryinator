@@ -1,0 +1,19 @@
+{
+  "name": "breweryinator.theme",
+  "version": "1.0.0",
+  "description": "Custom Bootstrap theme builder for Breweryinator",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node -e \"require('fs').watch('scss', { recursive: true }, () => require('child_process').execSync('node build.js', { stdio: 'inherit' })); console.log('Watching SCSS...');\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "sass": "^1.77.8"
+  }
+}

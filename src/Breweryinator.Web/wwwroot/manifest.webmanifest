@@ -1,0 +1,23 @@
+{
+  "name": "Breweryinator",
+  "short_name": "Breweryinator",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#f5a623",
+  "prefer_related_applications": false,
+  "description": "Storage management for home-brewed beer",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}
