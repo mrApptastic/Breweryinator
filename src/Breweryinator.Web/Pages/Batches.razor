@@ -1,0 +1,123 @@
+@page "/batches"
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Batches – Breweryinator</PageTitle>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-layers-fill text-success me-2"></i>Batches</h2>
+        <button class="btn btn-success" @onclick="ShowAddForm">
+            <i class="bi bi-plus-circle me-1"></i>New Batch
+        </button>
+    </div>
+
+    @if (_loading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading…</span>
+            </div>
+        </div>
+    }
+    else if (_error is not null)
+    {
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@_error
+        </div>
+    }
+    else if (_batches.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill me-2"></i>No batches yet. Start your first brew!
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Batch #</th>
+                        <th>Beer</th>
+                        <th>Brew Date</th>
+                        <th>Volume (L)</th>
+                        <th>Status</th>
+                        <th>Best Before</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var batch in _batches)
+                    {
+                        <tr>
+                            <td><code>@batch.BatchNumber</code></td>
+                            <td>@batch.BeerName</td>
+                            <td>@batch.BrewDate.ToLocalTime().ToString("dd MMM yyyy")</td>
+                            <td>@batch.VolumeInLitres L</td>
+                            <td><span class="@GetStatusBadgeClass(batch.Status)">@batch.Status</span></td>
+                            <td>
+                                @if (batch.BestBeforeDate.HasValue)
+                                {
+                                    @batch.BestBeforeDate.Value.ToLocalTime().ToString("dd MMM yyyy")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "beerId")]
+    private int? BeerId { get; set; }
+
+    private List<BatchDto> _batches = [];
+    private bool _loading = true;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBatches();
+    }
+
+    private async Task LoadBatches()
+    {
+        _loading = true;
+        _error = null;
+        try
+        {
+            var url = BeerId.HasValue ? $"api/batches?beerId={BeerId}" : "api/batches";
+            _batches = await Http.GetFromJsonAsync<List<BatchDto>>(url) ?? [];
+        }
+        catch (Exception ex)
+        {
+            _error = $"Failed to load batches: {ex.Message}";
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private static string GetStatusBadgeClass(BatchStatus status) => status switch
+    {
+        BatchStatus.Planned      => "badge-status-planned",
+        BatchStatus.Brewing      => "badge-status-brewing",
+        BatchStatus.Fermenting   => "badge-status-fermenting",
+        BatchStatus.Conditioning => "badge-status-conditioning",
+        BatchStatus.Packaged     => "badge-status-packaged",
+        BatchStatus.Consumed     => "badge-status-consumed",
+        _                        => "badge bg-secondary"
+    };
+
+    private void ShowAddForm()
+    {
+        // TODO: Open add batch modal/form
+    }
+}

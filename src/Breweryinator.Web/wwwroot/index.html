@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breweryinator</title>
+    <base href="/" />
+    <link rel="preload" id="webassembly" />
+    <!-- Custom Bootstrap theme (built by Breweryinator.Theme node app) -->
+    <link rel="stylesheet" href="css/breweryinator.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="Breweryinator.Web.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="text-center">
+                <svg class="loading-progress mb-3" style="width:80px;height:80px;">
+                    <circle r="40%" cx="50%" cy="50%" />
+                    <circle r="40%" cx="50%" cy="50%" />
+                </svg>
+                <p class="text-muted">Loading Breweryinator…</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui" class="alert alert-danger m-3 d-none" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        An unhandled error has occurred.
+        <a href="." class="alert-link ms-2">Reload</a>
+        <button type="button" class="btn-close float-end dismiss" aria-label="Close"></button>
+    </div>
+
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script>
+        // Namespace for Breweryinator JS interop
+        window.Breweryinator = {
+            _dotNetRef: null,
+            registerUpdateListener: function (dotNetRef) {
+                window.Breweryinator._dotNetRef = dotNetRef;
+            }
+        };
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' }).then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            notifyUpdate();
+                        }
+                    });
+                });
+            });
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data && event.data.type === 'APP_UPDATED') {
+                    notifyUpdate();
+                }
+            });
+        }
+
+        function notifyUpdate() {
+            if (window.Breweryinator._dotNetRef) {
+                window.Breweryinator._dotNetRef.invokeMethodAsync('NotifyUpdateAvailable');
+            }
+        }
+    </script>
+</body>
+
+</html>

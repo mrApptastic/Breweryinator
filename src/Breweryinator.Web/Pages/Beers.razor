@@ -1,0 +1,109 @@
+@page "/beers"
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Beers – Breweryinator</PageTitle>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-droplet-fill text-primary me-2"></i>Beers</h2>
+        <button class="btn btn-primary" @onclick="ShowAddForm">
+            <i class="bi bi-plus-circle me-1"></i>Add Beer
+        </button>
+    </div>
+
+    @if (_loading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading…</span>
+            </div>
+        </div>
+    }
+    else if (_error is not null)
+    {
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@_error
+        </div>
+    }
+    else if (_beers.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill me-2"></i>No beers yet. Add your first recipe!
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var beer in _beers)
+            {
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                @if (!string.IsNullOrEmpty(beer.Color))
+                                {
+                                    <span class="beer-color-swatch" style="background-color: @beer.Color;" title="@beer.Color"></span>
+                                }
+                                <strong>@beer.Name</strong>
+                            </div>
+                            <span class="badge bg-secondary">@beer.Style</span>
+                        </div>
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(beer.Description))
+                            {
+                                <p class="card-text small text-muted">@beer.Description</p>
+                            }
+                            <div class="d-flex gap-3 small">
+                                <span><i class="bi bi-percent me-1 text-primary"></i>ABV: <strong>@beer.AlcoholByVolume.ToString("F1")%</strong></span>
+                                <span><i class="bi bi-bullseye me-1 text-warning"></i>IBU: <strong>@beer.InternationalBitternessUnits.ToString("F0")</strong></span>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">
+                                <i class="bi bi-layers me-1"></i>@beer.BatchCount batch@(beer.BatchCount != 1 ? "es" : "")
+                            </span>
+                            <a href="/batches?beerId=@beer.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-layers-fill me-1"></i>Batches
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<BeerDto> _beers = [];
+    private bool _loading = true;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBeers();
+    }
+
+    private async Task LoadBeers()
+    {
+        _loading = true;
+        _error = null;
+        try
+        {
+            _beers = await Http.GetFromJsonAsync<List<BeerDto>>("api/beers") ?? [];
+        }
+        catch (Exception ex)
+        {
+            _error = $"Failed to load beers: {ex.Message}";
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private void ShowAddForm()
+    {
+        // TODO: Open add beer modal/form
+    }
+}

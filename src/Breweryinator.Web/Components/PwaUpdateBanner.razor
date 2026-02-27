@@ -1,0 +1,45 @@
+@inject IJSRuntime JS
+
+@if (_updateAvailable)
+{
+    <div class="pwa-update-banner alert alert-warning alert-dismissible shadow-lg d-flex align-items-center gap-3" role="alert">
+        <i class="bi bi-arrow-repeat fs-4"></i>
+        <div class="flex-grow-1">
+            <strong>A new version is available!</strong>
+            <div class="small text-muted">Reload to get the latest Breweryinator.</div>
+        </div>
+        <button class="btn btn-warning btn-sm" @onclick="Reload">
+            <i class="bi bi-arrow-clockwise me-1"></i>Reload
+        </button>
+        <button type="button" class="btn-close" @onclick="Dismiss" aria-label="Dismiss"></button>
+    </div>
+}
+
+@code {
+    private bool _updateAvailable;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("Breweryinator.registerUpdateListener", DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public void NotifyUpdateAvailable()
+    {
+        _updateAvailable = true;
+        StateHasChanged();
+    }
+
+    private async Task Reload()
+    {
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
+    private void Dismiss()
+    {
+        _updateAvailable = false;
+    }
+}

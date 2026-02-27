@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Breweryinator.Api/Breweryinator.Api.csproj" />
+    <Project Path="src/Breweryinator.Shared/Breweryinator.Shared.csproj" />
+    <Project Path="src/Breweryinator.Web/Breweryinator.Web.csproj" />
+  </Folder>
+</Solution>

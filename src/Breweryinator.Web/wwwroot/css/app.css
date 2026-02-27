@@ -1,0 +1,50 @@
+/* Custom app styles – Bootstrap theme is loaded from css/breweryinator.min.css */
+
+/* Loading progress SVG */
+.loading-progress {
+    position: relative;
+    display: block;
+    fill: none;
+    stroke: #f5a623;
+    stroke-width: 0.4rem;
+    stroke-linecap: round;
+}
+
+.loading-progress circle:last-child {
+    stroke: #4a2e19;
+    animation: loading-progress-spin 1.2s linear infinite;
+    transform-origin: 50% 50%;
+}
+
+@keyframes loading-progress-spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Blazor error UI */
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+}
+
+/* PWA update banner */
+.pwa-update-banner {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    min-width: 320px;
+    max-width: 90vw;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}

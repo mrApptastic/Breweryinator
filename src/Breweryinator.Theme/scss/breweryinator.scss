@@ -1,0 +1,63 @@
+// Custom Bootstrap theme variables – beer/brewery colour palette
+// Override *before* importing Bootstrap
+
+// ── Brand colours ────────────────────────────────────────────────────────────
+$primary:        #f5a623;   // amber / hops gold
+$secondary:      #4a2e19;   // dark malt brown
+$success:        #3a7d44;   // hop green
+$info:           #2196a7;   // cold blue
+$warning:        #f0c040;   // pale malt
+$danger:         #c0392b;   // red ale
+$light:          #fdf6e3;   // cream / pale
+$dark:           #1a1a2e;   // dark night / porter
+
+// ── Body / backgrounds ────────────────────────────────────────────────────────
+$body-bg:                  #fdf6e3;
+$body-color:               #2d2014;
+
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-family-sans-serif:   'Segoe UI', system-ui, -apple-system, sans-serif;
+$font-size-base:           1rem;
+$headings-font-weight:     700;
+$headings-color:           $secondary;
+
+// ── Navbar ────────────────────────────────────────────────────────────────────
+$navbar-dark-color:        rgba(#fdf6e3, 0.9);
+$navbar-dark-hover-color:  #fdf6e3;
+
+// ── Borders & Radius ─────────────────────────────────────────────────────────
+$border-radius:            0.5rem;
+$border-radius-lg:         0.75rem;
+
+// ── Cards ────────────────────────────────────────────────────────────────────
+$card-border-color:        rgba($secondary, 0.15);
+$card-cap-bg:              rgba($primary, 0.08);
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+$badge-font-weight:        600;
+
+// ── Import Bootstrap ─────────────────────────────────────────────────────────
+@import "bootstrap/scss/bootstrap";
+
+// ── Custom utility classes ────────────────────────────────────────────────────
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.badge-status-planned     { @extend .badge; background-color: $info !important; }
+.badge-status-brewing     { @extend .badge; background-color: $warning !important; color: $dark !important; }
+.badge-status-fermenting  { @extend .badge; background-color: $primary !important; color: $dark !important; }
+.badge-status-conditioning { @extend .badge; background-color: $success !important; }
+.badge-status-packaged    { @extend .badge; background-color: $secondary !important; }
+.badge-status-consumed    { @extend .badge; background-color: #888 !important; }
+
+.beer-color-swatch {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.15);
+    vertical-align: middle;
+}

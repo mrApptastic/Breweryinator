@@ -1,0 +1,68 @@
+@page "/"
+@attribute [Authorize]
+
+<PageTitle>Breweryinator – Home</PageTitle>
+
+<div class="container py-4">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-cup-hot-fill text-primary me-3"></i>Welcome to Breweryinator
+            </h1>
+            <p class="lead text-muted">
+                Your personal beer storage management system. Track your home-brewed beers,
+                manage batches and monitor their status from brew to bottle.
+            </p>
+            <div class="d-flex gap-3 mt-4">
+                <a href="/beers" class="btn btn-primary btn-lg">
+                    <i class="bi bi-droplet-fill me-2"></i>My Beers
+                </a>
+                <a href="/batches" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-layers-fill me-2"></i>My Batches
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 text-center mt-4 mt-lg-0">
+            <i class="bi bi-cup-straw display-1 text-primary opacity-50"></i>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-droplet-fill fs-1 text-primary mb-3 d-block"></i>
+                    <h5 class="card-title">Beer Recipes</h5>
+                    <p class="card-text text-muted small">
+                        Manage your beer styles, ABV, IBU and colour for every recipe you've perfected.
+                    </p>
+                    <a href="/beers" class="btn btn-sm btn-outline-primary mt-2">View Beers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-layers-fill fs-1 text-success mb-3 d-block"></i>
+                    <h5 class="card-title">Batch Tracking</h5>
+                    <p class="card-text text-muted small">
+                        Track every batch from planning through brewing, fermentation, conditioning and packaging.
+                    </p>
+                    <a href="/batches" class="btn btn-sm btn-outline-success mt-2">View Batches</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-phone-fill fs-1 text-info mb-3 d-block"></i>
+                    <h5 class="card-title">PWA App</h5>
+                    <p class="card-text text-muted small">
+                        Install on your device for offline access. Updates are applied automatically in the background.
+                    </p>
+                    <span class="badge bg-info text-dark mt-2">Progressive Web App</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
